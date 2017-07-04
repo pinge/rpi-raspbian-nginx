@@ -3,8 +3,8 @@ FROM resin/rpi-raspbian:jessie
 # GnuPG is already part of the base image
 # https://askubuntu.com/questions/605604/how-do-i-safely-uninstall-gnupg
 
-RUN apt-get -y update && \
-    apt-get -y install \
+RUN apt-get update -y && \
+    apt-get install -y --no-install-recommends \
         gcc \
         make \
         libc6-dev \
@@ -132,9 +132,9 @@ RUN mv /usr/bin/envsubst /tmp/ && \
 	        | xargs dpkg -S | awk '{ gsub(/:$/, "", $1); print $1 }' \
 	        | sort -u | xargs \
 	)" && \
-	apt-get -y remove $buildDeps && \
-	apt-get -y autoremove && \
-	apt-get -y install $runDeps && \
+	apt-get remove -y $buildDeps && \
+	apt-get autoremove -y && \
+	apt-get install -y $runDeps && \
 	mv /tmp/envsubst /usr/local/bin/ && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/* && \
